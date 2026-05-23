@@ -1,0 +1,242 @@
+Search the web and build a curated dataset of the top 20 most popular, highly-rated, and actively recommended credit cards available in India as of mid-2026.
+
+The goal is to generate a production-ready JSON dataset for a credit card recommendation/rewards engine.
+
+-----------------------------------
+CARD SELECTION METHODOLOGY
+-----------------------------------
+
+The AI agent MUST first identify and shortlist the top 20 cards using a balanced and research-driven methodology instead of randomly selecting cards.
+
+Selection criteria MUST include:
+
+1. Market Popularity
+- Frequently recommended by Indian credit card communities, Reddit India, CardMaven, Technofino, CardExpert, ValueResearch, ET Money, Mint, etc.
+- Widely issued and actively used cards in India.
+
+2. Coverage Across Categories
+The final 20 cards MUST contain a balanced mix across:
+- Cashback cards
+- Premium travel cards
+- Ultra-premium luxury cards
+- Entry-level rewards cards
+- Dining cards
+- Fuel cards
+- Co-branded retail cards
+- Airline/hotel cards
+- UPI-focused cards
+- Lifestyle cards
+- Forex/international spend cards
+
+3. Issuer Diversity
+Do NOT overload one bank.
+Distribute cards across major issuers such as:
+- HDFC Bank
+- ICICI Bank
+- SBI Card
+- Axis Bank
+- American Express
+- HSBC
+- IDFC FIRST
+- YES Bank
+- AU Bank
+- Kotak
+- Standard Chartered
+- IndusInd
+- Federal Bank
+- RBL Bank
+- Others if relevant
+
+4. Real-World Reward Strength
+Prioritize cards known for:
+- High effective reward rates
+- Strong transfer partners
+- Lounge access
+- Milestone benefits
+- Travel value
+- Cashback efficiency
+- Low forex markup
+- Strong ecosystem partnerships
+
+5. Recent Relevance (2025–2026)
+Cards MUST be validated against recent devaluations or upgrades.
+Avoid outdated legacy cards unless still strongly competitive.
+
+6. Data Availability
+Only include cards where:
+- Official fees
+- Reward structures
+- Lounge policies
+- T&C pages
+- Spend exclusions
+can be verified through live web sources.
+
+-----------------------------------
+RESEARCH REQUIREMENTS
+-----------------------------------
+
+For EACH selected card:
+- Research latest official bank pages and T&C PDFs
+- Cross-check reward logic using trusted Indian card analysis platforms
+- Verify:
+  - Joining fee
+  - Annual fee
+  - Fee waiver rules
+  - Domestic lounge policy
+  - International lounge policy
+  - Reward earning structure
+  - Reward redemption value
+  - Category exclusions
+  - Recent devaluations (if any)
+
+-----------------------------------
+OUTPUT REQUIREMENTS
+-----------------------------------
+
+Format the final output as ONE single valid JSON object.
+
+Output ONLY the JSON.
+Do NOT include:
+- markdown explanations
+- notes
+- analysis
+- tables
+- conversational text
+- code comments outside JSON
+
+The JSON must be directly savable as:
+swipewise_top20.json
+
+-----------------------------------
+JSON SCHEMA
+-----------------------------------
+
+{
+  "card_unique_id": {
+    "id": "card_unique_id",
+    "name": "Full Card Name",
+    "issuer": "Issuer Name",
+    "source": "Primary verification source and date",
+    "source_url": "https://official-or-verification-url.com",
+    "tagline": "Short summary of the card",
+    "is_devalued": true,
+    "pointToInr": 0.25,
+    "lounge": "Domestic and international lounge rules",
+    "fees": "Joining and annual fee details",
+    "waiver": "Annual fee waiver criteria",
+    "bestUse": "Best spending categories",
+    "worstUse": "Categories with exclusions or poor rewards",
+    "calcType": "percentage",
+    "spendIncrement": 150,
+    "multipliers": {
+      "groceries": 1,
+      "dining": 1,
+      "default": 1
+    },
+    "rates": {
+      "amazon": 1.33,
+      "amazon-nonprime": 1.33,
+      "groceries": 1.33,
+      "dining": 5.33,
+      "swiggy-zomato": 1.33,
+      "utility": 0.0,
+      "mmt-hotels": 6.66,
+      "mmt-flights": 6.66,
+      "international": 2.0,
+      "general": 1.33,
+      "default": 1.33
+    }
+  }
+}
+
+-----------------------------------
+FIELD RULES
+-----------------------------------
+
+1. id
+- Use lowercase alphanumeric slug
+Examples:
+- hdfcinfinia
+- sbicashback
+- iciciamazonpay
+
+2. source_url
+Must contain a real live URL from:
+- Official bank portal
+- Official T&C PDF
+- Trusted Indian finance/card analysis website
+
+3. is_devalued
+true:
+- if major reward/lounges/features were reduced in 2025/2026
+
+false:
+- if stable or improved
+
+4. calcType allowed values ONLY:
+- percentage
+- points_by_spend
+- points_by_value
+- amex
+
+5. Reward Rate Calculation Rules
+All values inside "rates" MUST represent FINAL NET RETURN %.
+
+Example:
+If:
+- 4 reward points per ₹150
+- 1 RP = ₹0.25
+
+Then:
+(4 × 0.25) / 150 × 100
+= 0.66%
+
+Use the FINAL calculated percentage only.
+
+6. Mandatory "rates" keys:
+- amazon
+- amazon-nonprime
+- groceries
+- dining
+- swiggy-zomato
+- utility
+- mmt-hotels
+- mmt-flights
+- international
+- general
+- default
+
+7. Lounge Rules
+Mention:
+- number of visits
+- domestic/international
+- spend-based unlock conditions if applicable
+
+8. Reward Exclusions
+Explicitly consider:
+- fuel
+- rent
+- wallet loads
+- education
+- insurance
+- utilities
+- government payments
+
+9. Accuracy Priority
+Prefer:
+- official bank data
+over
+- blogs/forums
+
+Use blogs/forums only for:
+- reward interpretation
+- real-world valuation
+- devaluation tracking
+
+10. Final Dataset Quality Goal
+The resulting JSON should be suitable for:
+- rewards optimization engines
+- AI recommendation systems
+- fintech apps
+- card comparison platforms
+- spend simulation systems
